@@ -5,7 +5,7 @@
         <DTRSummary />
       </md-tab>
       <md-tab id="tab-settings" md-label="Settings" md-icon="settings">
-        
+
       </md-tab>
     </md-tabs>
   </div>
@@ -22,5 +22,3 @@ export default {
 };
 </script>
 
-<style>
-</style>

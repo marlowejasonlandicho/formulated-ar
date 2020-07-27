@@ -192,7 +192,7 @@ export default {
       "md-accent": id === 3,
     }),
     computeAmount(item){
-      item.basicAmt = item.rate * item.totalNoOfDays;
+      item.basicAmt = (item.rate * item.totalNoOfDays).toLocaleString("en-US", {minimumFractionDigits: 2});
     },
     onEdit(item) {
       if(this.tempItem){
@@ -243,3 +243,6 @@ export default {
   },
 };
 </script>
+<style>
+
+</style>

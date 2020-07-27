@@ -15,7 +15,7 @@ export default class ARReceiptGenerator {
         amount = amount.toString();
         // amount = amount.replace(/[\, ]/g, '');
         if (amount != parseFloat(amount))
-            return 'not a number ';
+            return "Zero ";
         var decPointIdx = amount.indexOf('.');
         if (decPointIdx == -1)
             decPointIdx = amount.length;
@@ -48,7 +48,7 @@ export default class ARReceiptGenerator {
         }
         if (decPointIdx != amount.length) {
             var amountLength = amount.length;
-            strValue += 'point ';
+            strValue += 'and ';
             for (var j = decPointIdx + 1; j < amountLength; j++)
                 strValue += ones[amtVal[j]] + ' ';
         }
@@ -171,8 +171,19 @@ export default class ARReceiptGenerator {
             doc.setFontSize(10);
             doc.setFontStyle("normal");
 
-            let amtInWrds = this.capitalizeWords(this.amountInWords(computedAmt).trim());
+            let computedAmtFmts = computedAmt.toFixed(2).split(".");
 
+            let amtInWrdsWhole = this.capitalizeWords(this.amountInWords(+(computedAmtFmts[0])).trim());
+            let amtInWrdsPart = this.capitalizeWords(this.amountInWords(+(computedAmtFmts[1])).trim());
+            let amtInWrds = "";
+
+            if(amtInWrdsPart){
+                amtInWrds = amtInWrdsWhole + " Pesos And " + amtInWrdsPart+ " Centavos Only";
+            }
+            else{
+                amtInWrds = amtInWrdsWhole + " Pesos Only";
+            }
+            
             if(amtInWrds.length > 50){
                 let spaceLastIdx = amtInWrds.lastIndexOf(" ");
                 let amtInWrdsTemp = amtInWrds;
@@ -181,9 +192,9 @@ export default class ARReceiptGenerator {
                     spaceLastIdx = amtInWrdsTemp.lastIndexOf(" ");
                 }
                 doc.text(amtInWrds.slice(0, spaceLastIdx + 1), 20, 82 + padding);
-                doc.text(amtInWrds.slice(spaceLastIdx, amtInWrds.length).trim() + " Pesos Only", 20, 90 + padding);
+                doc.text(amtInWrds.slice(spaceLastIdx, amtInWrds.length).trim() , 20, 90 + padding);
             }else{
-                doc.text(amtInWrds + " Pesos Only", 20, 82 + padding);
+                doc.text(amtInWrds, 20, 82 + padding);
             }
 
             // doc.setFont("Calibri");
@@ -234,22 +245,6 @@ export default class ARReceiptGenerator {
             }
 
         }
-
-
-        
-
-
-        // //2nd Big rect
-        // doc.rect(15, 114, 180, 70);
-        // //3rd Big rect
-        // doc.rect(15, 213, 180, 70);
-
-
-
-
-        //2nd dash
-        // doc.line(5, 198.5, 205, 198.5);
-
 
         //End
         doc.save('AR-' + Date.now() + '.pdf')
