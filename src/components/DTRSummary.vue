@@ -192,19 +192,19 @@ export default {
       "md-accent": id === 3,
     }),
     computeAmount(item){
-      item.basicAmt = (item.rate * item.totalNoOfDays).toLocaleString("en-US", {minimumFractionDigits: 2});
+      item.basicAmt = (item.rate * item.totalNoOfDays).toFixed(2);
     },
     onEdit(item) {
       if(this.tempItem){
         this.tempItem.isEdit = false;
       }
       this.tempItem = item;
-      item.basicAmt = item.rate * item.totalNoOfDays;
+      item.basicAmt = (item.rate * item.totalNoOfDays).toFixed(2);
       item.isEdit = true;
     },
     onSave(item) {
       item.isEdit = false;
-      localStorage.setItem("people",JSON.stringify(this.people));
+      localStorage.setItem("people", JSON.stringify(this.people));
     },
     onCancel(item){
       item = this.tempItem;
@@ -214,6 +214,7 @@ export default {
       const index = this.people.indexOf(item);
       if (index > -1) {
         this.people.splice(index, 1);
+        localStorage.setItem("people",JSON.stringify(this.people));
       }
       item.isEdit = false;
     },
